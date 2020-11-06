@@ -2,10 +2,7 @@ package com.ardent.springboot.project3.mycontact.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -45,6 +42,7 @@ public class Person {
     /**
      * relation
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude   /* 불필요한 쿼리 호출 줄임 */
     private Block block;
 }
