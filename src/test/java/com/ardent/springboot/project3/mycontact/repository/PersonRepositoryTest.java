@@ -5,38 +5,41 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+/*@Sql("/data.sql")*/
 @SpringBootTest
 class PersonRepositoryTest {
     @Autowired
     private PersonRepository personRepository;
     @Test
     void crud(){
-//        Person person = new Person();
-        Person person = Person.builder()
-                        .id(1L)
-                        .age(30)
+        Person param = Person.builder()
                         .name("gildong")
-                        .bloodType("O")
                         .build();
 
-        personRepository.save(person);
+        personRepository.save(param);
 
-        System.out.println(personRepository.findAll());
+        List<Person> persons = personRepository.findByName("gildong");
 
-        List<Person> persons = personRepository.findAll();
+        persons.forEach(System.out::println);
 
-        assertThat(persons.size()).isEqualTo(1);
-        assertThat(persons.get(0).getId()).isEqualTo(1);
+        List<Person> newPerson = personRepository.findAll();
+
+        newPerson.forEach(System.out::println);
+
+        assertThat(newPerson.size()).isEqualTo(7);
+        assertThat(newPerson.get(0).getId()).isEqualTo(1);
+        assertThat(newPerson.get(0).getName()).isEqualTo("aa");
     }
 
     @Test
-    void hashCodeAndEquals(){
-        System.out.println();
+    void findByBirthday(){
+        List<Person> persons = personRepository.findByMonthOfBirthday(10);
+        assertThat(persons.size()).isEqualTo(6);
     }
 }
